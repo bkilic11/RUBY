@@ -1,0 +1,62 @@
+def convert_to_number(word)
+  numbers = {
+    'one' => '1', 'two' => '2', 'three' => '3', 'four' => '4', 'five' => '5', 'six' => '6', 'seven' => '7', 'eight' => '8', 'nine' => '9', 'ten' => '10',
+    'eleven' => '11', 'twelve' => '12', 'thirteen' => '13', 'fourteen' => '14', 'fifteen' => '15', 'sixteen' => '16', 'seventeen' => '17', 'eighteen' => '18', 'nineteen' => '19', 'twenty' => '20',
+    'thirty' => '30', 'forty' => '40', 'fifty' => '50', 'sixty' => '60', 'seventy' => '70', 'eighty' => '80', 'ninety' => '90',
+    'hundred' => '100', 'thousand' => '1000', 'millions' => '1000000'
+  }
+
+  word = word.downcase.strip                      # bu kodda kelimeyi küçük harfe dönüştürürüz ve başındaki ve sonundaki boşlukları kaldırız.
+
+  return nil unless numbers.key?(word)            # Burada kelime olarak yazdığımız sayıyı rakam olarak yazmak için kullandığımız fonksiyondur.
+
+  numbers[word]
+
+end
+
+def convert_text_to_numbers(text)
+  converted_text = text.gsub(/(\w+)/i) do |match|      # burada ise kelimeyi metinden buluruz ve i harfi ile büyüklük küçüklük kapatırız
+    number = convert_to_number(match)                  # burada ise eğer kelime rakama dönüşmüşse işlemimize devam eder dönüşmezse aynen o şekilde bırakır.
+    number ? number.to_s : match                       
+  end
+
+  converted_text.gsub!(/(\d+)\s+(\d+)/) do |match|    # burada ise iki sayının çarpımlarını alır.
+    number1 = $1.to_i
+    number2 = $2.to_i
+    (number1 * number2).to_s
+  end
+  
+  converted_text.gsub!(/(\d+)\s*-\s*(\d+)/) do |match|    # burada ise iki sayının toplamlarını alır.
+    number1 = $1.to_i
+    number2 = $2.to_i
+    (number1 + number2).to_s
+  end
+  
+
+  converted_text.gsub!(/(\d+)\s*-\s*(\d+)/) do |match|    # burada ise iki basamaklı 2 sayının birleşmesini ele alır yani 34 yazacaksak thirty-four yazmamız yeterlidir.
+    number1 = $1.to_i
+    number2 = $2.to_i
+    ((number1 * 10) + number2).to_s
+  end
+  
+  converted_text.gsub!(/(\d+)\s+hundred/i) do |match|       # burada ise yazdığımız 3 basamaklı iki sayıyı birbiriyle birleştirir yani örnek vermek gerekir ise 900 yazacaksam nine hundred yazmam yeterlidir.
+    number = $1.to_i
+    (number * 100).to_s
+  end
+
+  converted_text.gsub!(/(\d+)\s*hundred\s+(\d+)/i) do |match|   # burada yaptığım işlem ise 3 basamaklı sayıyı ekrana doğru bir şekilde yazdırmak için kullanılır. yani two hundred-seventy ifadesini 270 olarak yazar.
+    number1 = $1.to_i
+    number2 = $2.to_i
+    (number1 * 100 + number2).to_s
+  end
+
+  converted_text
+end
+
+puts 'Metin Giriniz:'             # son olarak burda ise kullanıcıdan döndüreceğimiz metni alırız
+input_text = gets.chomp         
+
+converted_text = convert_text_to_numbers(input_text)
+
+puts 'Metnin Çıktısı:'          # burada ise kullanıcıdan aldığımız metni döndürüp tekrar kullanıcıya göndeririz.
+puts converted_text     
