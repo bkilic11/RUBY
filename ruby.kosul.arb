@@ -1,0 +1,17 @@
+i = 6
+i ||= 4 
+puts "i değişkeninin değeri #{i}"
+
+arr ||= []
+hash ||= {}
+
+h = {}
+h[:a] ||= "T"
+puts " a anahtarının değeri #{h[:a]}"
+
+a &&= 8
+puts "a değişkeninin değeri #{a}"
+
+b = 1
+b &&= 2
+puts "b değişkeninin değeri #{b}"
