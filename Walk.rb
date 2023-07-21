@@ -6,7 +6,7 @@ class Robot
     def initialize(name, owner, step_length)
     
       @name, @owner, @step_length = name, owner, step_length.to_f
-      @step_num = nil€
+      @step_num = nil
       @daily = "- Başlangış noktası.\n"
       @position = 0
       @direction = nil
